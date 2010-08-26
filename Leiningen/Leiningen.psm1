@@ -19,7 +19,7 @@ function Lein {
   #>
   param(
     [Parameter(Mandatory = $true, Position = 0)] $Command = "help",
-    [string] $LeinVersion = "1.3.0-SNAPSHOT",
+    [string] $LeinVersion = "1.3.0",
     [string] $LeinJar = "$env:USERPROFILE\.m2\repository\leiningen\leiningen\$LeinVersion\leiningen-$LeinVersion-standalone.jar",
     [string] $LeinUrl = "http://github.com/downloads/technomancy/leiningen/leiningen-$LeinVersion-standalone.jar",
     [string] $LeinHome = 
