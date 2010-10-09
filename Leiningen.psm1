@@ -8,6 +8,7 @@ function Lein {
   .Parameter LeinVersion
   .Parameter LeinJar
   .Parameter LeinUrl
+  .Parameter LeinHome
   .Parameter ClojureVersion
   .Parameter ClojureJar
   .Parameter JavaCommand
@@ -19,7 +20,7 @@ function Lein {
   #>
   param(
     [Parameter(Mandatory = $true, Position = 0)] $Command = "help",
-    [string] $LeinVersion = "1.3.0",
+    [string] $LeinVersion = "1.3.1",
     [string] $LeinJar = "$env:USERPROFILE\.m2\repository\leiningen\leiningen\$LeinVersion\leiningen-$LeinVersion-standalone.jar",
     [string] $LeinUrl = "http://github.com/downloads/technomancy/leiningen/leiningen-$LeinVersion-standalone.jar",
     [string] $LeinHome = 
@@ -28,7 +29,7 @@ function Lein {
          } else {
            Join-Path $env:USERPROFILE ".lein"
          }}),
-    [string] $ClojureVersion = "1.2.0-RC2",
+    [string] $ClojureVersion = "1.2.0",
     [string] $ClojureJar = "$env:USERPROFILE\.m2\repository\org\clojure\clojure\$ClojureVersion\clojure-$ClojureVersion.jar",
     [string] $JavaCommand = 
       (& {if ($env:JAVA_CMD) {
@@ -66,7 +67,6 @@ function Lein {
   }
   switch ($Command) {
     "self-install" {
-      Write-Host "Downloading Leiningen now..."
       Download $LeinUrl $LeinJar
       return
     }
@@ -117,7 +117,8 @@ function Download {
     New-Item -Force -ItemType Directory -Path $directory | Out-Null
   }
   Import-Module BitsTransfer
-  Start-BitsTransfer -Source $Url -Destination $Path
+  Start-BitsTransfer -DisplayName "Self installing Leiningen" `
+    -Description "Downloading $Url" -Source $Url -Destination $Path
 }
 
 Export-ModuleMember -Function Lein
