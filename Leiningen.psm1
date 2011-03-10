@@ -20,9 +20,9 @@ function Lein {
   #>
   param(
     [Parameter(Mandatory = $true, Position = 0)] $Command = "help",
-    [string] $LeinVersion = "1.3.1",
+    [string] $LeinVersion = "1.4.2",
     [string] $LeinJar = "$env:USERPROFILE\.m2\repository\leiningen\leiningen\$LeinVersion\leiningen-$LeinVersion-standalone.jar",
-    [string] $LeinUrl = "http://github.com/downloads/technomancy/leiningen/leiningen-$LeinVersion-standalone.jar",
+    [string] $LeinUrl = "https://github.com/downloads/technomancy/leiningen/leiningen-$LeinVersion-standalone.jar",
     [string] $LeinHome = 
       (& {if ($env:LEIN_HOME) {
            $env:LEIN_HOME
@@ -116,9 +116,8 @@ function Download {
   if (-not (Test-Path -PathType Container $directory)) {
     New-Item -Force -ItemType Directory -Path $directory | Out-Null
   }
-  Import-Module BitsTransfer
-  Start-BitsTransfer -DisplayName "Self installing Leiningen" `
-    -Description "Downloading $Url" -Source $Url -Destination $Path
+  $client = New-Object System.Net.WebClient
+  $client.DownloadFile($Url, $Path)
 }
 
 Export-ModuleMember -Function Lein
